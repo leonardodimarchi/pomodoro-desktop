@@ -115,13 +115,28 @@ class _HomePageState extends State<HomePage> {
                   ElevatedButton(
                     onPressed: toggleTimer,
                     child: Text(
-                        (timer != null && timer!.isActive) ? 'Pause' : 'Start'),
+                        (timer != null && timer!.isActive) ? 'PAUSE' : 'START'),
+                    style: ButtonStyle(
+                        fixedSize:
+                            MaterialStateProperty.all(const Size(200, 50)),
+                        textStyle: MaterialStateProperty.resolveWith((states) {
+                          return const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 2,
+                          );
+                        })),
                   ),
                   if (timer != null && timer!.isActive)
-                    ElevatedButton(
-                      onPressed: skip,
-                      child: const Text('Skip'),
-                    ),
+                    MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: GestureDetector(
+                          onTap: skip,
+                          child: const Icon(
+                            Icons.skip_next_rounded,
+                            color: Colors.red,
+                            size: 30,
+                          ),
+                        ))
                 ],
               )
             ],
