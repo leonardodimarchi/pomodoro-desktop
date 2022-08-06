@@ -18,18 +18,6 @@ class _HomePageState extends State<HomePage> {
   void toggleTimer() {
     if (timer != null && timer!.isActive) {
       pause();
-
-      if (isAtBreak) {
-        setState(() {
-          secondsAmount = 25 * 60;
-          isAtBreak = false;
-        });
-      } else {
-        setState(() {
-          secondsAmount = 5 * 60;
-          isAtBreak = false;
-        });
-      }
     } else {
       startTimer();
     }
@@ -39,12 +27,59 @@ class _HomePageState extends State<HomePage> {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         secondsAmount--;
+
+        if (secondsAmount == 0) {
+          toggleMode();
+        }
       });
     });
   }
 
+  void toggleMode() {
+    pause();
+
+    if (isAtBreak) {
+      setState(() {
+        secondsAmount = 25 * 60;
+        isAtBreak = false;
+      });
+    } else {
+      setState(() {
+        secondsAmount = 5 * 60;
+        isAtBreak = true;
+      });
+    }
+  }
+
   void pause() {
-    timer?.cancel();
+    setState(() {
+      timer?.cancel();
+    });
+  }
+
+  void skip() {
+    showDialog(
+        context: context,
+        builder: (BuildContext ctx) {
+          return AlertDialog(
+            title: const Text('Please Confirm'),
+            content: const Text('Are you sure you want to skip the round?'),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    toggleMode();
+
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Yes')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('No'))
+            ],
+          );
+        });
   }
 
   @override
@@ -72,14 +107,21 @@ class _HomePageState extends State<HomePage> {
                     ?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Wrap(
+                spacing: 30,
+                direction: Axis.vertical,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   ElevatedButton(
                     onPressed: toggleTimer,
                     child: Text(
-                        (timer != null && timer!.isActive) ? 'Stop' : 'Start'),
+                        (timer != null && timer!.isActive) ? 'Pause' : 'Start'),
                   ),
+                  if (timer != null && timer!.isActive)
+                    ElevatedButton(
+                      onPressed: skip,
+                      child: const Text('Skip'),
+                    ),
                 ],
               )
             ],
