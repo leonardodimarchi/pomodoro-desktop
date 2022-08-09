@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:pomodoro_desktop/widgets/window_title_bar.dart';
+import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -99,6 +100,26 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              SleekCircularSlider(
+                appearance: CircularSliderAppearance(
+
+                  customWidths: CustomSliderWidths(
+                    progressBarWidth: 10,
+                  ),
+                ),
+                innerWidget: (double value) {
+                  return Center(child: Text(
+                showingTimer,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
+              ),);
+                },
+                initialValue: double.parse(((isAtBreak ? 5 * 60 : 25 * 60) - secondsAmount).toString()),
+                min: 0,
+                max: isAtBreak ? 5 * 60 : 25 * 60
+              ),
               Text(
                 showingTimer,
                 style: Theme.of(context)
