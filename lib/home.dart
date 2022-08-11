@@ -12,7 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int secondsAmount = 1 * 60;
+  int secondsAmount = 25 * 60;
   bool isAtBreak = false;
   Timer? timer;
 
