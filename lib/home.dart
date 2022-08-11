@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:pomodoro_desktop/widgets/circular_progress.dart';
 import 'package:pomodoro_desktop/widgets/window_title_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -90,6 +91,8 @@ class _HomePageState extends State<HomePage> {
     String showingTimer =
         '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
 
+    double currentMaxTime = isAtBreak ? 5 * 60 : 25 * 60;
+
     return Scaffold(
       body: Column(
         children: [
@@ -99,13 +102,22 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                showingTimer,
-                style: Theme.of(context)
-                    .textTheme
-                    .displayLarge
-                    ?.copyWith(fontWeight: FontWeight.bold),
-              ),
+              CircularProgress(
+                  innerWidget: (double value) {
+                    return Center(
+                      child: Text(
+                        showingTimer,
+                        style: Theme.of(context)
+                            .textTheme
+                            .displayMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                    );
+                  },
+                  value:
+                      double.parse((currentMaxTime - secondsAmount).toString()),
+                  min: 0,
+                  max: currentMaxTime),
               const SizedBox(height: 30),
               Wrap(
                 spacing: 30,
