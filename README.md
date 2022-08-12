@@ -8,5 +8,7 @@
 - [x] Add some styles
 - [x] Add circular slider
 - [x] Emit a sound when it is over (bring the app to the foreground)
-- [ ] Add an icon into the Tray bar (If possible, show the timer right at the tray bar)
-- [ ] When clicking the tray bar icon, open the window (or a minified version of it)
+- [x] Add an icon into the Tray bar 
+- [ ] Add png tray icon (for macOS and Linux)
+- [ ] Show the timer right at the tray bar (dynamic or while clicking)
+- [x] When clicking the tray bar icon, open the window (or a minified version of it)
