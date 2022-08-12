@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:audioplayers/audioplayers.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:pomodoro_desktop/widgets/circular_progress.dart';
 import 'package:pomodoro_desktop/widgets/window_title_bar.dart';
@@ -16,6 +18,8 @@ class _HomePageState extends State<HomePage> {
   bool isAtBreak = false;
   Timer? timer;
 
+  final audioPlayer = AudioPlayer();
+
   void toggleTimer() {
     if (timer != null && timer!.isActive) {
       pause();
@@ -30,10 +34,21 @@ class _HomePageState extends State<HomePage> {
         secondsAmount--;
 
         if (secondsAmount == 0) {
-          toggleMode();
+          finishTimer();
         }
       });
     });
+  }
+
+  void finishTimer() async {
+    toggleMode();
+
+    await audioPlayer.play(
+      DeviceFileSource('assets/sounds/treasure_sound.mp3'),
+      volume: 0.6,
+    );
+
+    appWindow.show();
   }
 
   void toggleMode() {
