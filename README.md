@@ -10,6 +10,6 @@
 - [x] Emit a sound when it is over (bring the app to the foreground)
 - [x] Add an icon into the Tray bar 
 - [ ] Test timer with the app in the background (at the tray bar)
-- [ ] Add png tray icon (for macOS and Linux)
+- [x] Add png tray icon (for macOS and Linux)
 - [ ] Show the timer right at the tray bar (dynamic if possible, or open a context menu with the timer while clicking)
 - [x] When clicking the tray bar icon, open the window (or a minified version of it)
