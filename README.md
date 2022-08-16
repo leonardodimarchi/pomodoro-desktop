@@ -13,3 +13,4 @@
 - [x] Add png tray icon (for macOS and Linux)
 - [x] When clicking the tray bar icon, open the window (or a minified version of it)
 - [ ] Add images into the README
+- [ ] Provide the installer
