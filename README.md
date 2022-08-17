@@ -1,5 +1,10 @@
 # Pomodoro Desktop
 
+## Simple Pomodoro Timer
+
+![App preview](.github/app_preview.jpg)
+![Tray bar icon](.github/tray_bar_preview.jpg)
+
 # Tasks
 - [x] Start and stop the timer
 - [x] When finishing a work session, switch to the break session (User need to click to start again)
@@ -12,5 +17,5 @@
 - [x] Test timer with the app in the background (at the tray bar)
 - [x] Add png tray icon (for macOS and Linux)
 - [x] When clicking the tray bar icon, open the window (or a minified version of it)
-- [ ] Add images into the README
+- [x] Add images into the README
 - [ ] Provide the installer
