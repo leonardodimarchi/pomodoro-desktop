@@ -100,6 +100,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isRunningTimer = timer != null && timer!.isActive;
+
     int minutes = (secondsAmount / 60).floor();
     int seconds = secondsAmount % 60;
 
@@ -142,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                   ElevatedButton(
                     onPressed: toggleTimer,
                     child: Text(
-                        (timer != null && timer!.isActive) ? 'PAUSE' : 'START'),
+                        (isRunningTimer) ? 'PAUSE' : 'START'),
                     style: ButtonStyle(
                         fixedSize:
                             MaterialStateProperty.all(const Size(200, 50)),
@@ -153,17 +155,20 @@ class _HomePageState extends State<HomePage> {
                           );
                         })),
                   ),
-                  if (timer != null && timer!.isActive)
-                    MouseRegion(
-                        cursor: SystemMouseCursors.click,
+                  AnimatedOpacity(
+                    opacity: isRunningTimer ? 1 : 0,
+                    duration: const Duration(milliseconds: 200),
+                    child: MouseRegion(
+                        cursor: isRunningTimer ? SystemMouseCursors.click : SystemMouseCursors.basic,
                         child: GestureDetector(
-                          onTap: skip,
+                          onTap: isRunningTimer ? skip : null,
                           child: const Icon(
                             Icons.skip_next_rounded,
                             color: Colors.red,
                             size: 30,
                           ),
-                        ))
+                        )),
+                  )
                 ],
               )
             ],
