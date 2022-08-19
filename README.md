@@ -19,4 +19,5 @@
 - [x] When clicking the tray bar icon, open the window (or a minified version of it)
 - [x] Add images into the README
 - [ ] Animations
+- [ ] Separate skip button component
 - [ ] Provide the installer
