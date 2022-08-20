@@ -13,12 +13,28 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   int secondsAmount = 25 * 60;
   bool isAtBreak = false;
   Timer? timer;
 
   final audioPlayer = AudioPlayer();
+
+  late AnimationController slideAnimationController;
+  late Animation<Offset> slideAnimationOffset;
+
+  @override
+  void initState() {
+    super.initState();
+
+    slideAnimationController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    slideAnimationOffset =
+        Tween<Offset>(begin: const Offset(0.0, 5.0), end: Offset.zero).animate(
+            CurvedAnimation(
+                parent: slideAnimationController, curve: Curves.elasticInOut));
+  }
 
   void toggleTimer() {
     if (timer != null && timer!.isActive) {
@@ -29,6 +45,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   void startTimer() {
+    setState(() {
+      secondsAmount--;
+
+      if (secondsAmount == 0) {
+        finishTimer();
+      }
+    });
+
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         secondsAmount--;
@@ -38,6 +62,8 @@ class _HomePageState extends State<HomePage> {
         }
       });
     });
+
+    slideAnimationController.forward();
   }
 
   void finishTimer() async {
@@ -71,6 +97,8 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       timer?.cancel();
     });
+
+    slideAnimationController.reverse();
   }
 
   void skip() {
@@ -143,8 +171,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   ElevatedButton(
                     onPressed: toggleTimer,
-                    child: Text(
-                        (isRunningTimer) ? 'PAUSE' : 'START'),
+                    child: Text((isRunningTimer) ? 'PAUSE' : 'START'),
                     style: ButtonStyle(
                         fixedSize:
                             MaterialStateProperty.all(const Size(200, 50)),
@@ -155,19 +182,24 @@ class _HomePageState extends State<HomePage> {
                           );
                         })),
                   ),
-                  AnimatedOpacity(
-                    opacity: isRunningTimer ? 1 : 0,
-                    duration: const Duration(milliseconds: 200),
-                    child: MouseRegion(
-                        cursor: isRunningTimer ? SystemMouseCursors.click : SystemMouseCursors.basic,
-                        child: GestureDetector(
-                          onTap: isRunningTimer ? skip : null,
-                          child: const Icon(
-                            Icons.skip_next_rounded,
-                            color: Colors.red,
-                            size: 30,
-                          ),
-                        )),
+                  SlideTransition(
+                    position: slideAnimationOffset,
+                    child: AnimatedOpacity(
+                      opacity: isRunningTimer ? 1 : 0,
+                      duration: const Duration(milliseconds: 500),
+                      child: MouseRegion(
+                          cursor: isRunningTimer
+                              ? SystemMouseCursors.click
+                              : SystemMouseCursors.basic,
+                          child: GestureDetector(
+                            onTap: isRunningTimer ? skip : null,
+                            child: const Icon(
+                              Icons.skip_next_rounded,
+                              color: Colors.red,
+                              size: 30,
+                            ),
+                          )),
+                    ),
                   )
                 ],
               )
