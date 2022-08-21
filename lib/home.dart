@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:pomodoro_desktop/widgets/circular_progress.dart';
+import 'package:pomodoro_desktop/widgets/skip_button.dart';
 import 'package:pomodoro_desktop/widgets/window_title_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,21 +21,6 @@ class _HomePageState extends State<HomePage>
   Timer? timer;
 
   final audioPlayer = AudioPlayer();
-
-  late AnimationController slideAnimationController;
-  late Animation<Offset> slideAnimationOffset;
-
-  @override
-  void initState() {
-    super.initState();
-
-    slideAnimationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1));
-    slideAnimationOffset =
-        Tween<Offset>(begin: const Offset(0.0, 5.0), end: Offset.zero).animate(
-            CurvedAnimation(
-                parent: slideAnimationController, curve: Curves.elasticInOut));
-  }
 
   void toggleTimer() {
     if (timer != null && timer!.isActive) {
@@ -62,8 +48,6 @@ class _HomePageState extends State<HomePage>
         }
       });
     });
-
-    slideAnimationController.forward();
   }
 
   void finishTimer() async {
@@ -97,8 +81,6 @@ class _HomePageState extends State<HomePage>
     setState(() {
       timer?.cancel();
     });
-
-    slideAnimationController.reverse();
   }
 
   void skip() {
@@ -182,24 +164,9 @@ class _HomePageState extends State<HomePage>
                           );
                         })),
                   ),
-                  SlideTransition(
-                    position: slideAnimationOffset,
-                    child: AnimatedOpacity(
-                      opacity: isRunningTimer ? 1 : 0,
-                      duration: const Duration(milliseconds: 500),
-                      child: MouseRegion(
-                          cursor: isRunningTimer
-                              ? SystemMouseCursors.click
-                              : SystemMouseCursors.basic,
-                          child: GestureDetector(
-                            onTap: isRunningTimer ? skip : null,
-                            child: const Icon(
-                              Icons.skip_next_rounded,
-                              color: Colors.red,
-                              size: 30,
-                            ),
-                          )),
-                    ),
+                  SkipButton(
+                    isActive: isRunningTimer,
+                    onClick: skip,
                   )
                 ],
               )
