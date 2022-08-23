@@ -20,4 +20,4 @@
 - [x] Add images into the README
 - [x] Animations at the skip button
 - [x] Separate skip button component
-- [ ] Provide the installer
+- [x] Provide the installer
