@@ -5,6 +5,7 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:pomodoro_desktop/widgets/circular_progress.dart';
 import 'package:pomodoro_desktop/widgets/skip_button.dart';
+import 'package:pomodoro_desktop/widgets/skip_dialog.dart';
 import 'package:pomodoro_desktop/widgets/window_title_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -87,24 +88,7 @@ class _HomePageState extends State<HomePage>
     showDialog(
         context: context,
         builder: (BuildContext ctx) {
-          return AlertDialog(
-            title: const Text('Please Confirm'),
-            content: const Text('Are you sure you want to skip the round?'),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    toggleMode();
-
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Yes')),
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('No'))
-            ],
-          );
+          return SkipDialog(onPressed: toggleMode);
         });
   }
 
