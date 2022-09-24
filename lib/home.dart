@@ -54,10 +54,24 @@ class _HomePageState extends State<HomePage>
   void finishTimer() async {
     toggleMode();
 
-    await audioPlayer.play(
-      DeviceFileSource('assets/sounds/treasure_sound.mp3'),
-      volume: 0.6,
-    );
+    try {
+      await audioPlayer.play(
+        AssetSource('sounds/treasure_sound.mp3'),
+        volume: 0.6,
+      );
+    } catch (error) {
+      showDialog(context: context, builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Oh no!'),
+          content: const Text('Something went wrong while loading the finishing sound =/'),
+          actions: [
+            TextButton(onPressed: () {
+              Navigator.of(context).pop();
+            }, child: const Text('It\'s okay'))
+          ],
+        );
+      });
+    }
 
     appWindow.show();
   }

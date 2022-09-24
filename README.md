@@ -21,5 +21,5 @@
 - [x] Animations at the skip button
 - [x] Separate skip button component
 - [x] Provide the installer
-- [ ] Fix the sound file and add a try catch on the file load method
+- [x] Fix the sound file and add a try catch on the file load method
 - [ ] Linux release
